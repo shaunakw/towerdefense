@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class TowerDefense extends JPanel implements KeyListener, MouseListener {
+public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     public static final int SIZE = 600;
     public static final int PATH_WIDTH = 50;
     public static final int PERIOD = 1000;

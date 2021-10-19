@@ -1,6 +1,6 @@
 import java.awt.*;
 
-class Enemy extends GameObject {
+public class Enemy extends GameObject {
     public static final int RADIUS = 20;
     public static final int SPEED = 2;
 

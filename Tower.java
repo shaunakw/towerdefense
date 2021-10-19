@@ -1,6 +1,6 @@
 import java.awt.*;
 
-abstract class Tower extends GameObject {
+public abstract class Tower extends GameObject {
     public static final int RADIUS = 25;
 
     public Tower(Point p) {

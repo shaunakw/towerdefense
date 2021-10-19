@@ -1,6 +1,6 @@
 import java.awt.*;
 
-class Spreader extends Tower {
+public class Spreader extends Tower {
     public static final int PROJ_RADIUS = 5;
     public static final int SPREAD_SPEED = 2;
     public static final int RANGE = 100;

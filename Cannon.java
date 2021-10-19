@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class Cannon extends Tower {
+public class Cannon extends Tower {
     public static final int PROJ_RADIUS = 10;
     public static final int PROJ_SPEED = 4;
     public static final int PERIOD = 1500;
