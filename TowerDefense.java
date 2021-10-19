@@ -61,6 +61,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         Tower tower = switch (n) {
             case 1 -> new Cannon(p, direction);
             case 2 -> new Spreader(p);
+            case 3 -> new Bomber(p, direction);
             default -> null;
         };
 
@@ -193,7 +194,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         paintKey(g2d, new Point(30, SIZE + 60), "A");
         paintKey(g2d, new Point(55, SIZE + 60), "S");
         paintKey(g2d, new Point(80, SIZE + 60), "D");
-        for (int i = 0; i <= 2; i++) {
+        for (int i = 0; i <= 3; i++) {
             Point text = new Point((4 * i + 1) * Tower.RADIUS + 120, SIZE + 50);
             Point tower = new Point((4 * i + 3) * Tower.RADIUS + 120, SIZE + 50);
             if (i > 0) {
@@ -218,6 +219,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_1 -> preview = 1;
             case KeyEvent.VK_2 -> preview = 2;
+            case KeyEvent.VK_3 -> preview = 3;
             case KeyEvent.VK_ESCAPE -> preview = 0;
             case KeyEvent.VK_W, KeyEvent.VK_UP -> direction = new Point(0, -1);
             case KeyEvent.VK_A, KeyEvent.VK_LEFT -> direction = new Point(-1, 0);

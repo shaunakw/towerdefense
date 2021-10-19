@@ -26,7 +26,7 @@ public class Enemy extends GameObject {
      */
     public boolean damage() {
         health--;
-        return health == 0;
+        return health <= 0;
     }
 
     @Override
