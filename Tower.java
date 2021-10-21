@@ -13,9 +13,9 @@ public abstract class Tower extends GameObject {
     abstract void update();
 
     /**
-     * @return whether this tower killed e
+     * Interact with an enemy, potentially damaging it
      */
-    abstract boolean damage(Enemy e);
+    abstract void interact(Enemy e);
 
     /**
      * Stop any ongoing tasks (e.g. timers)

@@ -29,14 +29,14 @@ public class Spreader extends Tower {
     }
 
     @Override
-    public boolean damage(Enemy e) {
+    public void interact(Enemy e) {
         for (int i = 0; i < 8; i++) {
             if (render[i] && e.getLocation().distance(getProjectile(i)) < Enemy.RADIUS) {
                 render[i] = false;
-                return e.damage();
+                e.damage();
+                return;
             }
         }
-        return false;
     }
 
     @Override

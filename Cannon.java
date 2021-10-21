@@ -42,14 +42,14 @@ public class Cannon extends Tower {
     }
 
     @Override
-    public boolean damage(Enemy e) {
+    public void interact(Enemy e) {
         for (int i = 0; i < projectiles.size(); i++) {
             if (e.getLocation().distance(projectiles.get(i)) < Enemy.RADIUS) {
                 projectiles.remove(i);
-                return e.damage();
+                e.damage();
+                return;
             }
         }
-        return false;
     }
 
     @Override

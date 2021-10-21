@@ -9,7 +9,7 @@ public class Bomber extends Tower {
     public static final int EXPLODE_DISTANCE = 250;
     public static final int FRAG_RADIUS = 5;
     public static final int FRAG_SPEED = 4;
-    public static final int FRAG_MAX_DISTANCE = 80;
+    public static final int FRAG_MAX_DISTANCE = 100;
     public static final int PERIOD = 4000;
 
     private final int dx;
@@ -72,24 +72,25 @@ public class Bomber extends Tower {
     }
 
     @Override
-    public boolean damage(Enemy e) {
+    public void interact(Enemy e) {
         for (Projectile p : projectiles) {
             if (p.fragPos > 0) {
                 for (int i = 0; i < 8; i++) {
                     if (p.frags[i] && e.getLocation().distance(getFrag(p, i)) < Enemy.RADIUS && p.fragPos > Enemy.RADIUS + FRAG_SPEED) {
                         p.frags[i] = false;
-                        return e.damage();
+                        e.damage();
+                        return;
                     }
                 }
             } else {
                 if (e.getLocation().distance(p.pos) < Enemy.RADIUS) {
                     p.fragPos += FRAG_SPEED;
                     e.damage();
-                    return e.damage();
+                    e.damage();
+                    return;
                 }
             }
         }
-        return false;
     }
 
     @Override

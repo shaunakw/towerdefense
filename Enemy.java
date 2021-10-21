@@ -12,6 +12,13 @@ public class Enemy extends GameObject {
     }
 
     /**
+     * @return whether the enemy is dead and can be safely removed
+     */
+    public boolean isDead() {
+        return health <= 0;
+    }
+
+    /**
      * Normalize dx and dy and move in that direction
      */
     public void move(int dx, int dy) {
@@ -21,12 +28,9 @@ public class Enemy extends GameObject {
 
     /**
      * Reduce health by 1
-     *
-     * @return whether the enemy is dead
      */
-    public boolean damage() {
+    public void damage() {
         health--;
-        return health <= 0;
     }
 
     @Override

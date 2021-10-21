@@ -38,7 +38,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
 
     private final ArrayList<Enemy> enemies = new ArrayList<>();
     private final ArrayList<Tower> towers = new ArrayList<>();
-    private final java.util.Timer timer = new Timer();
+    private final Timer timer = new Timer();
 
     private int stage = 0;
     private int preview = 0;
@@ -124,7 +124,8 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             }
 
             for (int i = 0; i < enemies.size(); i++) {
-                if (t.damage(enemies.get(i))) {
+                t.interact(enemies.get(i));
+                if (enemies.get(i).isDead()) {
                     enemies.remove(i);
                     i--;
                 }
