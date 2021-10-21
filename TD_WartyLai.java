@@ -2,7 +2,9 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
-
+/**
+ * Creates the Main class including creating the frame and executing all actions
+ */
 public class TD_WartyLai {
     public static void main(String[] args) {
         JFrame f = new JFrame("Tower Defense");

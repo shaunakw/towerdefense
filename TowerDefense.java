@@ -36,9 +36,9 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             0, 0, 0, 5, 5, 0, 5, 5, 5
     };
 
-    private final ArrayList<Enemy> enemies = new ArrayList<>();
-    private final ArrayList<Tower> towers = new ArrayList<>();
-    private final Timer timer = new Timer();
+    private ArrayList<Enemy> enemies;
+    private ArrayList<Tower> towers;
+    private Timer timer;
 
     private int stage = 0;
     private int preview = 0;
@@ -81,6 +81,12 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     }
 
     private void start() {
+        stage = 0;
+        preview = 0;
+        enemies = new ArrayList<>();
+        towers = new ArrayList<>();
+        timer = new Timer();
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -89,19 +95,25 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
                         enemies.add(new Enemy(path[0], order[stage]));
                     }
                     stage++;
-                } else {
-                    timer.cancel();
                 }
             }
         }, 0, PERIOD);
     }
 
     private void end(boolean win) {
+        timer.cancel();
         for (Tower t : towers) {
             t.stop();
         }
-        JOptionPane.showMessageDialog(null, win ? "You win!" : "You lose!");
-        System.exit(0);
+        // Restart the game if Yes is typed. Stops the game if No is typed. 
+        String m = JOptionPane.showInputDialog(win ? "You win!" : "You lose!" + " Want to play again? (Yes/No)");
+        if (m.equals("No")) {
+            System.exit(0);
+        } else if (m.equals("Yes")) {
+            start();
+        } else {
+            System.exit(0);
+        }
     }
 
     public void update() {
