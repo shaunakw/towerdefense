@@ -1,33 +1,36 @@
 import java.awt.*;
-
+/**
+ * Creates the Spreader class of Tower superclass
+ */
 public class Spreader extends Tower {
+    //Initiates instance variables of Spreader class
     public static final int PROJ_RADIUS = 5;
     public static final int SPREAD_SPEED = 2;
     public static final int RANGE = 100;
 
     private boolean[] render;
     private int spread = 0;
-
+    //Creates a constructor for Spreader class
     public Spreader(Point p) {
         super(p);
         resetProjectiles();
     }
-
+    //Resets the spreader projectiles
     private void resetProjectiles() {
         render = new boolean[]{true, true, true, true, true, true, true, true};
     }
-
+    //Method that accesses the angle and points of spread projectiles
     private Point getProjectile(int i) {
         double angle = Math.toRadians(i * 45);
         return new Point(x + (int) (Math.cos(angle) * spread), y + (int) (Math.sin(angle) * spread));
     }
-
+    //Creates the update method for spreader
     @Override
     public void update() {
         spread = (spread + SPREAD_SPEED) % RANGE;
         if (spread == 0) resetProjectiles();
     }
-
+    //Creates interact method for spreader
     @Override
     public void interact(Enemy e) {
         for (int i = 0; i < 8; i++) {
@@ -38,7 +41,7 @@ public class Spreader extends Tower {
             }
         }
     }
-
+    //Paints the spreader components into the game
     @Override
     public void paint(Graphics2D g2d) {
         for (int i = 0; i < 8; i++) {

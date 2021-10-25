@@ -1,5 +1,7 @@
 import java.awt.*;
-
+/**
+ * Creates a Tower class which is a subclass of GameObject
+ */
 public abstract class Tower extends GameObject {
     public static final int RADIUS = 25;
 
