@@ -284,6 +284,13 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             currency -= towerPrices[preview-1];
             preview = 0;
         }
+        for (int i = 0; i < towerPrices.length; i++) {
+            Point tower = new Point((4 * i + 7) * Tower.RADIUS + 120, SIZE + 50);
+            Rectangle hitbox = new Rectangle(tower.x - Tower.RADIUS, tower.y - Tower.RADIUS, 2 * Tower.RADIUS, 2 * Tower.RADIUS);
+            if (hitbox.contains(e.getPoint()) && currency >= towerPrices[i]) {
+                preview = i + 1;
+            }
+        }
     }
 
     @Override
