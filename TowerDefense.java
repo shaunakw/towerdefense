@@ -12,8 +12,10 @@ import java.util.TimerTask;
 
 public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     public static final int SIZE = 600;
+    public static final int BOTTOM_HEIGHT = 120;
     public static final int PATH_WIDTH = 50;
     public static final int PERIOD = 1000;
+    public static final int START_CURRENCY = 10;
     public static final int CURRENCY_FONT_SIZE = 20;
 
     private final Point[] path = {
@@ -72,8 +74,8 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     private Tower generateTower(int n, Point p, boolean permanent) {
         Tower tower = switch (n) {
             case 1 -> new Cannon(p, direction);
-            case 2 -> new Spreader(p);
-            case 3 -> new Bomber(p, direction);
+            case 2 -> new Bomber(p, direction);
+            case 3 -> new Spreader(p);
             default -> null;
         };
 
@@ -93,7 +95,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     }
 
     private void start() {
-        currency = 5;
+        currency = START_CURRENCY;
         stage = 0;
         preview = 0;
         enemies = new ArrayList<>();
@@ -228,6 +230,8 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             if (i > 0) {
                 paintKey(g2d, text, "" + i);
                 generateTower(i, tower, false).paint(g2d);
+                g2d.setColor(currency < towerPrices[i-1] ? Color.red : Color.black);
+                g2d.drawString("$" + towerPrices[i-1], tower.x - 8, tower.y + Tower.RADIUS + 20);
             } else {
                 paintKey(g2d, text, "Esc", 32);
                 g2d.setStroke(new BasicStroke(10));
@@ -250,9 +254,15 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_1 -> preview = 1;
-            case KeyEvent.VK_2 -> preview = 2;
-            case KeyEvent.VK_3 -> preview = 3;
+            case KeyEvent.VK_1 -> {
+                if (currency >= towerPrices[0]) preview = 1;
+            }
+            case KeyEvent.VK_2 -> {
+                if (currency >= towerPrices[1]) preview = 2;
+            }
+            case KeyEvent.VK_3 -> {
+                if (currency >= towerPrices[2]) preview = 3;
+            }
             case KeyEvent.VK_ESCAPE -> preview = 0;
             case KeyEvent.VK_W, KeyEvent.VK_UP -> direction = new Point(0, -1);
             case KeyEvent.VK_A, KeyEvent.VK_LEFT -> direction = new Point(-1, 0);
@@ -269,6 +279,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (preview != 0 && canPlace) {
             towers.add(getPreviewTower(true));
+            currency -= towerPrices[preview-1];
             preview = 0;
         }
     }

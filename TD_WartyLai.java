@@ -2,6 +2,7 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
+
 /**
  * Creates the Main class including creating the frame and executing all actions
  */
@@ -11,7 +12,7 @@ public class TD_WartyLai {
         TowerDefense td = TowerDefense.getInstance();
 
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().setPreferredSize(new Dimension(TowerDefense.SIZE, TowerDefense.SIZE + 100));
+        f.getContentPane().setPreferredSize(new Dimension(TowerDefense.SIZE, TowerDefense.SIZE + TowerDefense.BOTTOM_HEIGHT));
         f.pack();
         f.add(td);
         f.setVisible(true);
