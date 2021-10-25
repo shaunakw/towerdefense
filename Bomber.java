@@ -22,6 +22,7 @@ public class Bomber extends Tower {
         Point pos;
         int fragPos;
         boolean[] frags;
+        Enemy initialHit;
 
         Projectile(int x, int y) {
             pos = new Point(x, y);
@@ -76,7 +77,7 @@ public class Bomber extends Tower {
         for (Projectile p : projectiles) {
             if (p.fragPos > 0) {
                 for (int i = 0; i < 8; i++) {
-                    if (p.frags[i] && e.getLocation().distance(getFrag(p, i)) < Enemy.RADIUS && p.fragPos > Enemy.RADIUS + FRAG_SPEED) {
+                    if (p.frags[i] && e != p.initialHit && e.getLocation().distance(getFrag(p, i)) < Enemy.RADIUS) {
                         p.frags[i] = false;
                         e.damage();
                         return;
@@ -85,6 +86,7 @@ public class Bomber extends Tower {
             } else {
                 if (e.getLocation().distance(p.pos) < Enemy.RADIUS) {
                     p.fragPos += FRAG_SPEED;
+                    p.initialHit = e;
                     e.damage();
                     e.damage();
                     return;

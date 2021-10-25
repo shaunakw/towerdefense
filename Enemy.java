@@ -31,6 +31,7 @@ public class Enemy extends GameObject {
      */
     public void damage() {
         health--;
+        TowerDefense.getInstance().addCurrency(1);
     }
 
     @Override

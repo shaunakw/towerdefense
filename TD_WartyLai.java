@@ -8,7 +8,7 @@ import java.util.TimerTask;
 public class TD_WartyLai {
     public static void main(String[] args) {
         JFrame f = new JFrame("Tower Defense");
-        TowerDefense td = new TowerDefense();
+        TowerDefense td = TowerDefense.getInstance();
 
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().setPreferredSize(new Dimension(TowerDefense.SIZE, TowerDefense.SIZE + 100));

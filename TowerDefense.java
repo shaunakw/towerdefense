@@ -14,6 +14,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     public static final int SIZE = 600;
     public static final int PATH_WIDTH = 50;
     public static final int PERIOD = 1000;
+    public static final int CURRENCY_FONT_SIZE = 20;
 
     private final Point[] path = {
             new Point(-Enemy.RADIUS, 500),
@@ -35,22 +36,33 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             0, 0, 0, 4, 3, 4, 3, 4, 3,
             0, 0, 0, 5, 5, 0, 5, 5, 5
     };
+    private final int[] towerPrices = {5, 10, 15};
 
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
     private Timer timer;
 
+    private int currency = 5;
     private int stage = 0;
     private int preview = 0;
     private boolean canPlace = false;
     private Point mouse = new Point(SIZE / 2, SIZE / 2); // center (default)
     private Point direction = new Point(-1, 0); // left (default)
 
-    public TowerDefense() {
+    private static TowerDefense instance;
+
+    private TowerDefense() {
         setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
         start();
+    }
+
+    public static TowerDefense getInstance() {
+        if (instance == null) {
+            instance = new TowerDefense();
+        }
+        return instance;
     }
 
     private Tower getPreviewTower(boolean permanent) {
@@ -81,6 +93,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     }
 
     private void start() {
+        currency = 5;
         stage = 0;
         preview = 0;
         enemies = new ArrayList<>();
@@ -105,11 +118,9 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         for (Tower t : towers) {
             t.stop();
         }
-        // Restart the game if Yes is typed. Stops the game if No is typed. 
-        String m = JOptionPane.showInputDialog(win ? "You win!" : "You lose!" + " Want to play again? (Yes/No)");
-        if (m.equals("No")) {
-            System.exit(0);
-        } else if (m.equals("Yes")) {
+        // Restarts the game if yes is typed. Stops the game if no is typed.
+        String m = JOptionPane.showInputDialog((win ? "You win!" : "You lose!") + " Want to play again? (yes/no)");
+        if (m != null && (m.equalsIgnoreCase("yes") || m.equalsIgnoreCase("y"))) {
             start();
         } else {
             System.exit(0);
@@ -156,6 +167,10 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             }
             end(false);
         }
+    }
+
+    public void addCurrency(int amount) {
+        currency += amount;
     }
 
     private void paintKey(Graphics2D g2d, Point p, String key) {
@@ -207,7 +222,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         paintKey(g2d, new Point(30, SIZE + 60), "A");
         paintKey(g2d, new Point(55, SIZE + 60), "S");
         paintKey(g2d, new Point(80, SIZE + 60), "D");
-        for (int i = 0; i <= 3; i++) {
+        for (int i = 0; i <= towerPrices.length; i++) {
             Point text = new Point((4 * i + 1) * Tower.RADIUS + 120, SIZE + 50);
             Point tower = new Point((4 * i + 3) * Tower.RADIUS + 120, SIZE + 50);
             if (i > 0) {
@@ -221,6 +236,11 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
                 g2d.drawLine(tower.x - 5, tower.y + 10, tower.x + 15, tower.y - 10);
             }
         }
+
+        Font font = g2d.getFont();
+        g2d.setColor(Color.black);
+        g2d.setFont(font.deriveFont((float) CURRENCY_FONT_SIZE));
+        g2d.drawString("$" + currency, 10, 10 + CURRENCY_FONT_SIZE);
     }
 
     @Override
