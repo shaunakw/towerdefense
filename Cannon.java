@@ -10,6 +10,7 @@ public class Cannon extends Tower {
     public static final int PROJ_RADIUS = 10;
     public static final int PROJ_SPEED = 4;
     public static final int PERIOD = 1500;
+    public static final int SHOOTER_SIZE = 20;
 
     private final int dx;
     private final int dy;
@@ -36,7 +37,7 @@ public class Cannon extends Tower {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                projectiles.add(new Point(x + dx * 20, y + dy * 20));
+                projectiles.add(new Point(x, y));
             }
         }, 0, PERIOD);
     }
@@ -70,8 +71,8 @@ public class Cannon extends Tower {
         }
 
         g2d.setColor(new Color(188, 158, 130));
-        g2d.fillRect(x + dx * 20 - 10, y + dy * 20 - 10, 20, 20);
-        g2d.fillOval(x - RADIUS + 10, y - RADIUS + 10, 2 * RADIUS - 20, 2 * RADIUS - 20);
+        g2d.fillRect(x + (dx * 2 - 1) * SHOOTER_SIZE / 2, y + (dy * 2 - 1) * SHOOTER_SIZE / 2, SHOOTER_SIZE, SHOOTER_SIZE);
+        g2d.fillOval(x - INNER_RADIUS, y - INNER_RADIUS, 2 * INNER_RADIUS, 2 * INNER_RADIUS);
     }
     // Creates stop method that ends timer
     @Override

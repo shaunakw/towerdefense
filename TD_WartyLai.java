@@ -26,6 +26,6 @@ public class TD_WartyLai {
                 td.update();
                 td.repaint();
             }
-        }, 0, 1000 / 60);
+        }, 0, 1000 / TowerDefense.FPS);
     }
 }
