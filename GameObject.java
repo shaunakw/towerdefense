@@ -1,5 +1,7 @@
 import java.awt.*;
-
+/**
+ * Creates GameObject superclass for all objects in the game
+ */
 public abstract class GameObject {
     //Initiates integer x and y variables
     protected int x;

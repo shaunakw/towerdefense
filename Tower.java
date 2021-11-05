@@ -1,10 +1,13 @@
 import java.awt.*;
 /**
- * Creates a Tower class which is a subclass of GameObject
+ * Creates a Tower class with superclass GameObject
  */
 public abstract class Tower extends GameObject {
     public static final int RADIUS = 25;
-
+    /**
+     * Creates Tower constructor using superclass constructor
+     * @param p
+     */
     public Tower(Point p) {
         super(p);
     }

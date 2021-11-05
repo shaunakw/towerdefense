@@ -73,7 +73,7 @@ public class Cannon extends Tower {
         g2d.fillRect(x + dx * 20 - 10, y + dy * 20 - 10, 20, 20);
         g2d.fillOval(x - RADIUS + 10, y - RADIUS + 10, 2 * RADIUS - 20, 2 * RADIUS - 20);
     }
-
+    // Creates stop method that ends timer
     @Override
     public void stop() {
         timer.cancel();

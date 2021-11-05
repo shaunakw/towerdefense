@@ -73,7 +73,7 @@ public class Spreader extends Tower {
         g2d.setColor(Color.darkGray);
         g2d.fillOval(x - RADIUS + 10, y - RADIUS + 10, 2 * RADIUS - 20, 2 * RADIUS - 20);
     }
-
+    // Creates stop method that ends timer
     @Override
     public void stop() {
     }

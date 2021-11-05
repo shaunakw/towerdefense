@@ -30,7 +30,7 @@ public class Enemy extends GameObject {
     }
 
     /**
-     * Reduce health by 1
+     * Reduce health by 1 and increase money by 1
      */
     public void damage() {
         health--;

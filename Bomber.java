@@ -20,7 +20,9 @@ public class Bomber extends Tower {
     //Creates projectiles arraylist of the small projectiles
     private final ArrayList<Projectile> projectiles = new ArrayList<>();
     private final Timer timer;
-
+    /**
+     * Creates a projectile class for our game projectiles
+     */
     private static class Projectile {
         Point pos;
         int fragPos;
@@ -63,7 +65,9 @@ public class Bomber extends Tower {
         double angle = Math.toRadians(i * 45);
         return new Point(p.pos.x + (int) (Math.cos(angle) * p.fragPos), p.pos.y + (int) (Math.sin(angle) * p.fragPos));
     }
-    //Creates update method that detects if projectiles hits enemies
+    /**
+     * Creates update method that detects if projectiles hits enemies
+     */
     @Override
     public void update() {
         for (int i = 0; i < projectiles.size(); i++) {
@@ -79,7 +83,7 @@ public class Bomber extends Tower {
             }
         }
     }
-
+    //Creates interact method that checks if projectiles hit enemy + inflicts damage
     @Override
     public void interact(Enemy e) {
         for (Projectile p : projectiles) {
@@ -126,7 +130,7 @@ public class Bomber extends Tower {
         g2d.fillRect(x + dx * 20 - 10, y + dy * 20 - 10, 20, 20);
         g2d.fillOval(x - RADIUS + 10, y - RADIUS + 10, 2 * RADIUS - 20, 2 * RADIUS - 20);
     }
-
+    // Creates stop method that ends timer
     @Override
     public void stop() {
         timer.cancel();

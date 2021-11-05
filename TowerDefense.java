@@ -56,21 +56,21 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     private int cheatCode = 0;
 
     private static TowerDefense instance;
-
+    // Creates TowerDefense constructor
     private TowerDefense() {
         setFocusable(true);
         addKeyListener(this);
         addMouseListener(this);
         start();
     }
-
+    // Returns an instance of Tower Defense whether it exists or not
     public static TowerDefense getInstance() {
         if (instance == null) {
             instance = new TowerDefense();
         }
         return instance;
     }
-
+    // Gets a rectangle for size of arena
     private Rectangle getArena() {
         return new Rectangle(0, 0, SIZE, SIZE);
     }
@@ -102,7 +102,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         boolean y = p.y == l1.y || Math.min(l1.y, l2.y) < p.y && p.y < Math.max(l1.y, l2.y);
         return x && y;
     }
-
+    // Creates start method which basically resets everything and starts the game
     private void start() {
         currency = START_CURRENCY;
         stage = 0;
@@ -180,15 +180,15 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         }
     }
 
-    // Includes currency
+    // Creates add currency method for currency system
     public void addCurrency(int amount) {
         currency += amount;
     }
-
+    // Creates paint key method for painting onto the game
     private void paintKey(Graphics2D g2d, Point p, String key) {
         paintKey(g2d, p, key, 20);
     }
-
+    // Creates paint key method with different parameters
     private void paintKey(Graphics2D g2d, Point p, String key, int width) {
         g2d.setStroke(new BasicStroke(2));
         g2d.setColor(Color.black);
@@ -220,7 +220,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         for (Tower t : towers) {
             t.paint(g2d);
         }
-
+        // Creates preview interaction for towers
         Tower preview = getPreviewTower(false);
         if (preview != null) {
             preview.paint(g2d);
@@ -262,7 +262,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         g2d.setFont(font.deriveFont((float) CURRENCY_FONT_SIZE));
         g2d.drawString("$" + currency, 10, 10 + CURRENCY_FONT_SIZE);
     }
-
+    //Checks for a key being clicked
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -285,7 +285,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             case KeyEvent.VK_S -> direction = new Point(0, 1);
             case KeyEvent.VK_D -> direction = new Point(1, 0);
         }
-
+        // Creating the best cheat code in history
         if (e.getKeyCode() == KeyEvent.VK_UP && cheatCode <= 1 ||
             e.getKeyCode() == KeyEvent.VK_DOWN && cheatCode > 1 && cheatCode <= 3 ||
             e.getKeyCode() == KeyEvent.VK_LEFT && (cheatCode == 4 || cheatCode == 6) ||
@@ -297,15 +297,16 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             cheatCode = 0;
         }
         if (cheatCode == 10) {
+            // yes
             currency = 999999;
             cheatCode = 0;
         }
     }
-
+    // Checks for when a key is released
     @Override
     public void keyReleased(KeyEvent e) {
     }
-
+    // Places tower upon the click of the mouse
     @Override
     public void mouseClicked(MouseEvent e) {
         if (preview != 0 && canPlace) {
