@@ -9,8 +9,9 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
 /**
- * Creates the TowerDefense class which JPanel superclass and KeyListener and Mouselistener interface
+ * Creates the TowerDefense class which JPanel superclass and KeyListener and MouseListener interfaces
  */
 public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     public static final int SIZE = 600;
@@ -41,7 +42,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             0, 0, 0, 5, 5, 0, 5, 5, 5
     };
     private final int[] towerPrices = {5, 10, 15};
-    //Creates an arraylist of enemies (balls), arraylist of towers, and timer
+    // Creates an arraylist of enemies (balls), arraylist of towers, and timer
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
     private Timer timer;
@@ -52,6 +53,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     private boolean canPlace = false;
     private Point mouse = new Point(SIZE / 2, SIZE / 2); // center (default)
     private Point direction = new Point(-1, 0); // left (default)
+    private int cheatCode = 0;
 
     private static TowerDefense instance;
 
@@ -68,11 +70,16 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         }
         return instance;
     }
-    //Previews a tower when mouse hovers
+
+    private Rectangle getArena() {
+        return new Rectangle(0, 0, SIZE, SIZE);
+    }
+
+    // Previews a tower when mouse hovers
     private Tower getPreviewTower(boolean permanent) {
         return generateTower(preview, mouse, permanent);
     }
-    //Creates a tower
+    // Creates a tower
     private Tower generateTower(int n, Point p, boolean permanent) {
         Tower tower = switch (n) {
             case 1 -> new Cannon(p, direction);
@@ -116,7 +123,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             }
         }, 0, PERIOD);
     }
-    //Initiates ending the game
+    // Initiates ending the game
     private void end(boolean win) {
         timer.cancel();
         for (Tower t : towers) {
@@ -130,21 +137,21 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             System.exit(0);
         }
     }
-    //Creates and update method for the game
+    // Creates and update method for the game
     public void update() {
         if (enemies.size() == 0 && stage == order.length) {
             end(true);
         }
 
         mouse = MouseInfo.getPointerInfo().getLocation();
-        canPlace = true;
+        canPlace = getArena().contains(mouse);
         for (int i = 1; i < path.length; i++) {
             if (new Line2D.Double(path[i - 1], path[i]).ptSegDist(mouse) < PATH_WIDTH / 2.0 + Tower.RADIUS) {
                 canPlace = false;
                 break;
             }
         }
-        //Places towers
+        // Places towers
         for (Tower t : towers) {
             if (t.getLocation().distance(mouse) < Tower.RADIUS * 2) {
                 canPlace = false;
@@ -172,7 +179,8 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             end(false);
         }
     }
-    //Includes currency
+
+    // Includes currency
     public void addCurrency(int amount) {
         currency += amount;
     }
@@ -187,26 +195,28 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         g2d.drawString(key, p.x - 4, p.y + 4);
         g2d.drawRoundRect(p.x - 10, p.y - 10, width, 20, 5, 5);
     }
-    //Paints everything into the game
+
+    // Paints everything into the game
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.drawRect(0, 0, SIZE, SIZE);
+        g2d.draw(getArena());
         g2d.setColor(new Color(0, 154, 23));
-        g2d.fillRect(0, 0, SIZE, SIZE);
+        g2d.fill(getArena());
+
 
         g2d.setStroke(new BasicStroke(PATH_WIDTH));
         g2d.setColor(new Color(255, 253, 208));
         for (int i = 1; i < path.length; i++) {
             g2d.drawLine(path[i - 1].x, path[i - 1].y, path[i].x, path[i].y);
         }
-        //Paint all of the enemies
+        // Paint all the enemies
         for (Enemy e : enemies) {
             e.paint(g2d);
         }
-        //Paint all of the towers
+        // Paint all the towers
         for (Tower t : towers) {
             t.paint(g2d);
         }
@@ -221,7 +231,11 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
                 g2d.drawLine(mouse.x - 5, mouse.y + 5, mouse.x + 5, mouse.y - 5);
             }
         }
-        //Paints the lower game bar
+
+        g2d.setColor(Color.white);
+        g2d.fillRect(0, SIZE, SIZE, BOTTOM_HEIGHT);
+
+        // Paints the lower game bar
         paintKey(g2d, new Point(55, SIZE + 35), "W");
         paintKey(g2d, new Point(30, SIZE + 60), "A");
         paintKey(g2d, new Point(55, SIZE + 60), "S");
@@ -266,17 +280,32 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
                 if (currency >= towerPrices[2]) preview = 3;
             }
             case KeyEvent.VK_ESCAPE -> preview = 0;
-            case KeyEvent.VK_W, KeyEvent.VK_UP -> direction = new Point(0, -1);
-            case KeyEvent.VK_A, KeyEvent.VK_LEFT -> direction = new Point(-1, 0);
-            case KeyEvent.VK_S, KeyEvent.VK_DOWN -> direction = new Point(0, 1);
-            case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> direction = new Point(1, 0);
+            case KeyEvent.VK_W -> direction = new Point(0, -1);
+            case KeyEvent.VK_A -> direction = new Point(-1, 0);
+            case KeyEvent.VK_S -> direction = new Point(0, 1);
+            case KeyEvent.VK_D -> direction = new Point(1, 0);
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_UP && cheatCode <= 1 ||
+            e.getKeyCode() == KeyEvent.VK_DOWN && cheatCode > 1 && cheatCode <= 3 ||
+            e.getKeyCode() == KeyEvent.VK_LEFT && (cheatCode == 4 || cheatCode == 6) ||
+            e.getKeyCode() == KeyEvent.VK_RIGHT && (cheatCode == 5 || cheatCode == 7) ||
+            e.getKeyCode() == KeyEvent.VK_B && cheatCode == 8 ||
+            e.getKeyCode() == KeyEvent.VK_A && cheatCode == 9) {
+            cheatCode++;
+        } else {
+            cheatCode = 0;
+        }
+        if (cheatCode == 10) {
+            currency = 999999;
+            cheatCode = 0;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
     }
-    //Places towers upon a moue click
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (preview != 0 && canPlace) {
