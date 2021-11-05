@@ -1,14 +1,17 @@
 import java.awt.*;
+
 /**
- * Creates Enemy class of superclass GameObject
+ * Enemy that moves along a path and changes color based on health
  */
 public class Enemy extends GameObject {
-    //Initiates instsance variables for enemy class
     public static final int RADIUS = 20;
     public static final int SPEED = 2;
-    //Creates health isntance variable
+
     private int health;
-    //Creates Enemy constructor with point and health
+
+    /**
+     * Creates a new enemy at the given position with the given health
+     */
     public Enemy(Point p, int health) {
         super(p);
         this.health = health;
@@ -36,7 +39,10 @@ public class Enemy extends GameObject {
         health--;
         TowerDefense.getInstance().addCurrency(1);
     }
-    //Paints components for enemy
+
+    /**
+     * Draws the enemy
+     */
     @Override
     public void paint(Graphics2D g2d) {
         g2d.setColor(getColor());

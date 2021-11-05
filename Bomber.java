@@ -2,11 +2,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
 /**
- * Creates Bomber class of Tower superclass
+ * Tower that shoots show projectiles that deal more damage and explode into fragments
  */
 public class Bomber extends Tower {
-    //Creates instance variables for Bomber
     public static final int N_PROJ = 8;
     public static final int PROJ_RADIUS = 15;
     public static final int PROJ_SPEED = 2;
@@ -20,11 +20,12 @@ public class Bomber extends Tower {
 
     private final int dx;
     private final int dy;
-    //Creates projectiles arraylist of the small projectiles
+
     private final ArrayList<Projectile> projectiles = new ArrayList<>();
     private final Timer timer;
+
     /**
-     * Creates a projectile class for our game projectiles
+     * Stores information about a single projectile and its fragments
      */
     private static class Projectile {
         Point pos;
@@ -38,7 +39,10 @@ public class Bomber extends Tower {
             frags = new boolean[]{ true, true, true, true, true, true, true, true };
         }
     }
-    //Creates Bomber constructor
+
+    /**
+     * Creates a bomber at the given location (p) with the given direction (d)
+     */
     public Bomber(Point p, Point d) {
         super(p);
         dx = d.x;
@@ -58,18 +62,17 @@ public class Bomber extends Tower {
             }
         }, 0, PERIOD);
     }
+
     /**
-     * Creates getFrag method which returns a point
-     * @param p
-     * @param i
-     * @return Point
+     * @return the location of fragment i of the given projectile
      */
     private Point getFrag(Projectile p, int i) {
         double angle = Math.toRadians(i * 360. / N_PROJ);
         return new Point(p.pos.x + (int) (Math.cos(angle) * p.fragPos), p.pos.y + (int) (Math.sin(angle) * p.fragPos));
     }
+
     /**
-     * Creates update method that detects if projectiles hits enemies
+     * Updates the location of each projectile and its fragments
      */
     @Override
     public void update() {
@@ -86,7 +89,10 @@ public class Bomber extends Tower {
             }
         }
     }
-    //Creates interact method that checks if projectiles hit enemy + inflicts damage
+
+    /**
+     * Checks if the given enemy is in contact with a projectile or fragment
+     */
     @Override
     public void interact(Enemy e) {
         for (Projectile p : projectiles) {
@@ -109,7 +115,10 @@ public class Bomber extends Tower {
             }
         }
     }
-    //Paints Bomber components into the game
+
+    /**
+     * Draws the tower and its projectiles
+     */
     @Override
     public void paint(Graphics2D g2d) {
         g2d.setColor(Color.black);
@@ -133,7 +142,10 @@ public class Bomber extends Tower {
         g2d.fillRect(x + (dx * 2 - 1) * SHOOTER_SIZE / 2, y + (dy * 2 - 1) * SHOOTER_SIZE / 2, SHOOTER_SIZE, SHOOTER_SIZE);
         g2d.fillOval(x - INNER_RADIUS, y - INNER_RADIUS, 2 * INNER_RADIUS, 2 * INNER_RADIUS);
     }
-    // Creates stop method that ends timer
+
+    /**
+     * Stops the timer
+     */
     @Override
     public void stop() {
         timer.cancel();

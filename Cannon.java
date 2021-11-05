@@ -2,11 +2,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
 /**
- * Creates Cannon class of Tower superclass
+ * Basic tower that shoots projectiles in a given direction
  */
 public class Cannon extends Tower {
-    //Creates instance variables for Cannon class
     public static final int PROJ_RADIUS = 10;
     public static final int PROJ_SPEED = 4;
     public static final int PERIOD = 1500;
@@ -14,13 +14,12 @@ public class Cannon extends Tower {
 
     private final int dx;
     private final int dy;
-    //Creates projectiles arraylist and timer
+
     private final ArrayList<Point> projectiles = new ArrayList<>();
     private final Timer timer;
+
     /**
-     * Cannon constructor
-     * @param p
-     * @param d
+     * Creates a cannon at the given location (p) with the given direction (d)
      */
     public Cannon(Point p, Point d) {
         super(p);
@@ -31,7 +30,7 @@ public class Cannon extends Tower {
     }
 
     /**
-     * Start timer
+     * Starts timer
      */
     private void start() {
         timer.schedule(new TimerTask() {
@@ -41,14 +40,20 @@ public class Cannon extends Tower {
             }
         }, 0, PERIOD);
     }
-    //Update method for cannon
+
+    /**
+     * Updates the location of each projectile
+     */
     @Override
     public void update() {
         for (Point p : projectiles) {
             p.translate(dx * PROJ_SPEED, dy * PROJ_SPEED);
         }
     }
-    //Cannon interact method for projectiles and enemies
+
+    /**
+     * Checks if a given enemy is in contact with a projectile
+     */
     @Override
     public void interact(Enemy e) {
         for (int i = 0; i < projectiles.size(); i++) {
@@ -59,7 +64,10 @@ public class Cannon extends Tower {
             }
         }
     }
-    //Paint cannonc componenets to the game
+
+    /**
+     * Draws the tower and its projectiles
+     */
     @Override
     public void paint(Graphics2D g2d) {
         g2d.setColor(new Color(54, 34, 4));
@@ -74,7 +82,10 @@ public class Cannon extends Tower {
         g2d.fillRect(x + (dx * 2 - 1) * SHOOTER_SIZE / 2, y + (dy * 2 - 1) * SHOOTER_SIZE / 2, SHOOTER_SIZE, SHOOTER_SIZE);
         g2d.fillOval(x - INNER_RADIUS, y - INNER_RADIUS, 2 * INNER_RADIUS, 2 * INNER_RADIUS);
     }
-    // Creates stop method that ends timer
+
+    /**
+     * Stops the timer
+     */
     @Override
     public void stop() {
         timer.cancel();

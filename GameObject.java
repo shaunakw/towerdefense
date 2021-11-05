@@ -1,29 +1,29 @@
 import java.awt.*;
+
 /**
- * Creates GameObject superclass for all objects in the game
+ * Any object in the game that has a location
  */
 public abstract class GameObject {
-    //Initiates integer x and y variables
     protected int x;
     protected int y;
+
     /**
-     * Creates the GameObject constructor
-     * @param p
+     * Creates a new object at the given location
      */
     public GameObject(Point p) {
         x = p.x;
         y = p.y;
     }
+
     /**
-     * Creates the getLocation method
-     * @return Point(x,y)
+     * @return the location of the object
      */
     public Point getLocation() {
         return new Point(x, y);
     }
 
     /**
-     * Render the tower
+     * Render the object
      */
     abstract void paint(Graphics2D g2d);
 }

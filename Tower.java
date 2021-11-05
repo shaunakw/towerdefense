@@ -1,27 +1,31 @@
 import java.awt.*;
+
 /**
- * Creates a Tower class which is a subclass of GameObject
+ * Tower that is a game object and can interact with enemies
  */
 public abstract class Tower extends GameObject {
     public static final int RADIUS = 25;
     public static final int INNER_RADIUS = RADIUS - 10;
 
+    /**
+     * Creates a new tower at the given position
+     */
     public Tower(Point p) {
         super(p);
     }
 
     /**
-     * Update internal data
+     * Updates internal data
      */
     abstract void update();
 
     /**
-     * Interact with an enemy, potentially damaging it
+     * Interacts with an enemy, potentially damaging it
      */
     abstract void interact(Enemy e);
 
     /**
-     * Stop any ongoing tasks (e.g. timers)
+     * Stops any ongoing tasks (e.g. timers)
      */
     abstract void stop();
 }

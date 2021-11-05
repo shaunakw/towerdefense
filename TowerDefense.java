@@ -11,7 +11,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Creates the TowerDefense class which JPanel superclass and KeyListener and MouseListener interfaces
+ * Main game class.
+ * Handles the game logic and manages all the game objects
  */
 public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     // Game dimensions/mechanics
@@ -32,6 +33,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     public static final int KEY_ARC = 5;
     public static final Point TOWER_PRICE_OFFSET = new Point(-8, 20);
 
+    // Enemy path
     private static final Point[] PATH = {
             new Point(-Enemy.RADIUS, 500),
             new Point(200, 500),
@@ -45,6 +47,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             new Point(600 + Enemy.RADIUS, 500)
     };
 
+    // Locations of the WASD keys
     private static final Point[] KEY_LOCATIONS = {
             new Point(55, SIZE + 50),
             new Point(30, SIZE + 75),
@@ -52,6 +55,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             new Point(80, SIZE + 75)
     };
 
+    // Order of enemies (health)
     private static final int[] ORDER = {
             0, 0, 0, 1, 1, 1, 1, 1, 1,
             0, 0, 0, 1, 1, 1, 2, 2, 2,
@@ -61,6 +65,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             0, 0, 0, 5, 5, 0, 5, 5, 5
     };
 
+    // Prices of towers
     private static final int[] TOWER_PRICES = { 5, 10, 15 };
 
     private ArrayList<Enemy> enemies;
@@ -77,6 +82,9 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
 
     private static TowerDefense instance;
 
+    /**
+     * Initialize the game
+     */
     private TowerDefense() {
         setFocusable(true);
         addKeyListener(this);
@@ -84,6 +92,9 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         start();
     }
 
+    /**
+     * @return singleton instance of the game
+     */
     public static TowerDefense getInstance() {
         if (instance == null) {
             instance = new TowerDefense();
@@ -91,15 +102,27 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         return instance;
     }
 
+    /**
+     * @return game bounds
+     */
     private Rectangle getArena() {
         return new Rectangle(0, 0, SIZE, SIZE);
     }
 
-    // Previews a tower when mouse hovers
+    /**
+     * @param permanent whether the tower is being placed
+     * @return preview tower object
+     */
     private Tower getPreviewTower(boolean permanent) {
         return generateTower(preview, mouse, permanent);
     }
-    // Creates a tower
+
+    /**
+     * @param n type of tower
+     * @param p location of tower
+     * @param permanent whether the tower is being placed
+     * @return tower object with the given parameters
+     */
     private Tower generateTower(int n, Point p, boolean permanent) {
         Tower tower = switch (n) {
             case 1 -> new Cannon(p, direction);
@@ -123,6 +146,9 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         return x && y;
     }
 
+    /**
+     * Starts the game logic
+     */
     private void start() {
         currency = START_CURRENCY;
         stage = 0;
@@ -143,7 +169,11 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             }
         }, 0, ENEMY_PERIOD);
     }
-    // Initiates ending the game
+
+    /**
+     * End the game logic
+     * @param win whether the player won
+     */
     private void end(boolean win) {
         timer.cancel();
         for (Tower t : towers) {
@@ -157,7 +187,10 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             System.exit(0);
         }
     }
-    // Creates and update method for the game
+
+    /**
+     * Update the preview tower, placed towers, and enemies
+     */
     public void update() {
         if (enemies.size() == 0 && stage == ORDER.length) {
             end(true);
@@ -176,7 +209,6 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             if (t.getLocation().distance(mouse) < Tower.RADIUS * 2) {
                 canPlace = false;
             }
-            //Detects for towers hitting the enemies
             for (int i = 0; i < enemies.size(); i++) {
                 t.interact(enemies.get(i));
                 if (enemies.get(i).isDead()) {
@@ -186,7 +218,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
             }
             t.update();
         }
-        //Updates enemies
+
         e:
         for (Enemy e : enemies) {
             Point p = e.getLocation();
@@ -200,15 +232,23 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         }
     }
 
-    // Includes currency
+    /**
+     * Update the user currency
+     */
     public void addCurrency(int amount) {
         currency += amount;
     }
 
+    /**
+     * Render a key at the given location
+     */
     private void paintKey(Graphics2D g2d, Point p, String key) {
         paintKey(g2d, p, key, KEY_SIZE);
     }
 
+    /**
+     * Render a key at the given location with a custom width
+     */
     private void paintKey(Graphics2D g2d, Point p, String key, int width) {
         g2d.setStroke(new BasicStroke(2));
         g2d.setColor(Color.black);
@@ -216,7 +256,9 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
         g2d.drawRoundRect(p.x - KEY_SIZE / 2, p.y - KEY_SIZE / 2, width, KEY_SIZE, KEY_ARC, KEY_ARC);
     }
 
-    // Paints everything into the game
+    /**
+     * Draw the game
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -286,7 +328,10 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     @Override
     public void keyTyped(KeyEvent e) {
     }
-    //Method detecting which key is pressed
+
+    /**
+     * Handle key presses
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -326,6 +371,9 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     public void keyReleased(KeyEvent e) {
     }
 
+    /**
+     * Handle mouse clicks
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         if (preview != 0 && canPlace) {
