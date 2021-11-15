@@ -14,7 +14,7 @@ public class Bomber extends Tower {
     public static final int FRAG_RADIUS = 5;
     public static final int FRAG_SPEED = 4;
     public static final int FRAG_MAX_DISTANCE = 100;
-    public static final int PERIOD = 4000;
+    public static final int PERIOD = 3569;
     public static final int SHOOTER_SIZE = 20;
     public static final int BORDER_ARC = 10;
 

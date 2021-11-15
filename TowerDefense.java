@@ -66,7 +66,7 @@ public class TowerDefense extends JPanel implements KeyListener, MouseListener {
     };
 
     // Prices of towers
-    private static final int[] TOWER_PRICES = { 5, 10, 15 };
+    private static final int[] TOWER_PRICES = { 5, 10, 20 };
 
     private ArrayList<Enemy> enemies;
     private ArrayList<Tower> towers;
