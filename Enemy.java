@@ -59,6 +59,7 @@ public class Enemy extends GameObject {
             case 3 -> Color.green;
             case 4 -> Color.yellow;
             case 5 -> Color.pink;
+            case 6 -> Color.black;
             default -> new Color(0, 0, 0, 0);
         };
     }
